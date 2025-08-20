@@ -42,6 +42,18 @@ public class Repository {
 
 
 
+    public boolean isIdExists(String id) {
+        if(id==null){
+            return false;
+        }
+        for (Member member : memberList) {
+            if (member.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean isNicknameExists(String nickname) {
         //리스트 순회하면서 닉네임 중복 확인
         if (nickname == null) {
@@ -90,6 +102,31 @@ public class Repository {
         if(newMember != null) {
             memberList.add(newMember);
         }
+    }
+
+    public Member findMember(String id) {
+        for (Member member : memberList) {
+            if (id != null && id.equals(member.getId()) && member.getAccountStatus() == AccountStatus.ACTIVE) {
+                return member;
+            }
+        }
+        return null;
+    }
+
+    public int modifyMember(Member modifyMember) {
+        // repository가 가진 컬렉션의 회원부터 수정
+        for (int i = 0; i < memberList.size(); i++) {
+            if (memberList.get(i).getId().equals(modifyMember.getId())) {
+                memberList.set(i, modifyMember);
+                saveMembers(memberList);
+                return 1;
+            }
+
+        }
+        return 0;
+    }
+
+    private void saveMembers(ArrayList<Member> members) {
     }
 }
 // Repository = 데이터 저장, 조회, 관리하는 역할 (데이터 영속성)
