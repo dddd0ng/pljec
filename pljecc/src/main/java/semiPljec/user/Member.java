@@ -1,8 +1,9 @@
 package semiPljec.user;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Member {
+public class Member implements Serializable {
     private int memNo;
     private String id;
     private String pwd;
