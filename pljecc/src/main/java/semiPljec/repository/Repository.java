@@ -3,8 +3,8 @@ package semiPljec.repository;
 import semiPljec.user.AccountStatus;
 import semiPljec.user.Member;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Repository {
@@ -13,22 +13,38 @@ public class Repository {
 
     public Repository() {
         if(!file.exists()){
-            {
+            ArrayList<Member> defaultMemberList = new ArrayList<>();
                 try {
                     // 파일이 위치할 디렉토리가 없으면 생성합니다.
                     file.getParentFile().mkdirs();
                     // 파일을 새로 생성합니다.
                     file.createNewFile();
                     // 생성된 파일에 초기 데이터를 저장합니다.
-//        saveMembers(defaultMemberList);
+        saveMembers(defaultMemberList);
                 } catch (IOException e) {
                     System.out.println("초기 데이터 파일을 생성하거나 저장하는 데 오류가 발생했습니다.");
                     throw new RuntimeException(e);
                 }
-//        loadMembers();
-            }
+        loadMembers();
+
         }
 
+    }
+
+    private void loadMembers() {
+        try (ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+            while(true) {
+                memberList.add((Member) ois.readObject());
+            }
+        } catch (EOFException e) {
+            System.out.println("회원 정보 읽어오기 완료!");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public ArrayList<Member> findAllMembers() {
@@ -41,6 +57,18 @@ public class Repository {
     }
 
 
+
+    public boolean isIdExists(String id) {
+        if(id==null){
+            return false;
+        }
+        for (Member member : memberList) {
+            if (member.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public boolean isNicknameExists(String nickname) {
         //리스트 순회하면서 닉네임 중복 확인
@@ -89,6 +117,47 @@ public class Repository {
         //실제 저장
         if(newMember != null) {
             memberList.add(newMember);
+        }
+    }
+
+    public Member findMember(String id) {
+        for (Member member : memberList) {
+            if (id != null && id.equals(member.getId()) && member.getAccountStatus() == AccountStatus.ACTIVE) {
+                return member;
+            }
+        }
+        return null;
+    }
+
+    public int modifyMember(Member modifyMember) {
+        // repository가 가진 컬렉션의 회원부터 수정
+        for (int i = 0; i < memberList.size(); i++) {
+            if (memberList.get(i).getId().equals(modifyMember.getId())) {
+                memberList.set(i, modifyMember);
+                saveMembers(memberList);
+                return 1;
+            }
+
+        }
+        return 0;
+    }
+
+    private void saveMembers(ArrayList<Member> members) {
+        ObjectOutputStream oos = null;
+        try {
+            oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
+            for (Member member : members) {
+                oos.writeObject(member);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try{
+                if(oos != null) oos.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
         }
     }
 }
