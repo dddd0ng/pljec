@@ -160,6 +160,20 @@ public class Repository {
 
         }
     }
+
+    public int removeMember(String memId) {
+        int result = 0;
+        for (Member member : memberList) {
+            if (member.getId().equals(memId)) {
+                member.setAccountStatus(AccountStatus.DEACTIVE);
+
+                saveMembers(memberList);
+
+                result = 1;
+                break;
+            }
+        }return result;
+    }
 }
 // Repository = 데이터 저장, 조회, 관리하는 역할 (데이터 영속성)
 

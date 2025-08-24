@@ -39,7 +39,7 @@ public class Application {
                 service.modifyMember(modify(selectMember));
                 break;
             case 5: // 추천 메뉴 조회
-//                service.
+                service.removeMember(chooseId());
                 break;
             case 6: // 추천 메뉴 삭제
 //                service.

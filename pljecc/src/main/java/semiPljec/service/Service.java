@@ -82,4 +82,14 @@ public class Service {
     public void modifyMember(Member modifyMember) {
         int result = repository.modifyMember(modifyMember);
     }
+
+    public void removeMember(String memId) {
+        int result = repository.removeMember(memId);
+
+        if (result > 0) {
+            System.out.println("회원님 그동안 감사했습니다.");
+        }else{
+            System.out.println("회원탈퇴 실패");
+        }
+    }
 }
