@@ -2,7 +2,7 @@ package semiPljec.user;
 
 public enum Menu {
 
-    
+
     /*
     * 한식:김치,비빔밥,불고기,한정식
     * 중식:딤섬,마파두부,훠궈,마라탕,짜장면,짬뽕

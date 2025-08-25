@@ -1,5 +1,6 @@
 package semiPljec.repository;
 
+import semiPljec.stream.Output;
 import semiPljec.user.AccountStatus;
 import semiPljec.user.Member;
 
@@ -19,19 +20,48 @@ public class Repository {
                     file.getParentFile().mkdirs();
                     // 파일을 새로 생성합니다.
                     file.createNewFile();
-                    // 생성된 파일에 초기 데이터를 저장합니다.
-        saveMembers(defaultMemberList);
+                    // 생성된 파일에 초기 데이터를 저장합니다. (빈 리스트 저장)
+                saveMembers(defaultMemberList);
                 } catch (IOException e) {
                     System.out.println("초기 데이터 파일을 생성하거나 저장하는 데 오류가 발생했습니다.");
                     throw new RuntimeException(e);
                 }
-        loadMembers();
-
         }
+        loadMembers();
+    }
 
+
+    public int registMember(Member newMember) {
+        Output moo = null;
+        int result = 0;
+        try{
+            moo=new Output(new BufferedOutputStream(new FileOutputStream(file, true)));
+            moo.writeObject(newMember);
+            moo.flush();
+            //buffered때매 출력할 때 flush() 필요함, 없으면 값 안나옴
+            //컬렉션에 담긴 기존 회원을 지우고 다시 파일의 정보를 토대로
+            //컬렉션이 회원으로 채워지도록 작성
+//            memberList.clear();
+//            loadMembers();
+            memberList.add(newMember);
+            saveMembers(memberList);
+
+            result=1;
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }finally{
+            try{
+                if (moo != null) moo.close();
+            }catch(IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+        return result;
     }
 
     private void loadMembers() {
+        if(file.length() == 0) return; // 파일 비어있으면 그냥 종료
+
         try (ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
             while(true) {
                 memberList.add((Member) ois.readObject());
@@ -49,7 +79,7 @@ public class Repository {
 
     public ArrayList<Member> findAllMembers() {
         ArrayList<Member> result = new ArrayList<>();
-        for (Member member : result) {
+        for (Member member : memberList) {
             if (member.getAccountStatus() == AccountStatus.ACTIVE) {
                 result.add(member);
             }
