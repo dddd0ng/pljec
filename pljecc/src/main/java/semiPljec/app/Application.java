@@ -36,6 +36,12 @@ public class Application {
             case 4: // 회원 정보 수정
                 Member selectMember = service.fineMemberForModify(chooseId()) ;
 
+                //회원 정보가 없을 시 작동
+                if (selectMember == null) {
+                    System.out.println("회원 정보 수정이 불가능합니다.(없는 회원입니다.)");
+                    break; // 메인 메뉴로 돌아감
+                }
+                //회원 정보가 있을 시 작동
                 service.modifyMember(modify(selectMember));
                 break;
             case 5: // 추천 메뉴 조회
@@ -45,7 +51,7 @@ public class Application {
 //                service.
                 break;
             case 7: // 회원 탈퇴
-//                service.
+                service.removeMember(chooseId());
                 break;
                 case 9: // 프로그램 종료
                     System.out.println("프로그램을 종료하겠습니다.");
