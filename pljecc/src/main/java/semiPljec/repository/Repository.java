@@ -8,6 +8,7 @@ import java.io.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+// DB/파일 입출력 담당 (데이터 저장/조회(불러오기))
 public class Repository {
     private final ArrayList<Member> memberList = new ArrayList<>();
     private final File file = new File("/Users/dong/pljec/pljecc/src/main/java/semiPljec/db/mariaDB.dat");
@@ -203,6 +204,14 @@ public class Repository {
                 break;
             }
         }return result;
+    }
+
+    public int findLastMemberNo() {
+        if (memberList.isEmpty()) {
+            return 0;   // 아직 회원이 없으면 0 리턴
+        }
+        // 마지막 회원 번호 꺼내오기
+        return memberList.get(memberList.size() - 1).getMemNo();
     }
 }
 // Repository = 데이터 저장, 조회, 관리하는 역할 (데이터 영속성)
