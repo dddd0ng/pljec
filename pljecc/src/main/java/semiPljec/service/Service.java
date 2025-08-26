@@ -5,7 +5,9 @@ import semiPljec.user.AccountStatus;
 import semiPljec.user.Member;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
+//실제 비즈니스 로직 처리 (회원가입, 로그인, 수정, 삭제 등)
 public class Service {
 //    private final Repository repository = new Repository();
 
@@ -108,6 +110,59 @@ public class Service {
             System.out.println("회원님 그동안 감사했습니다.");
         }else{
             System.out.println("회원탈퇴 실패");
+        }
+    }
+
+    public void signUp() {
+        Scanner sc = new Scanner(System.in);
+        Member newMember = new Member();
+
+        System.out.print("아이디 입력: ");
+        String id = sc.nextLine();
+        if(repository.isIdExists(id)) {
+            System.out.println("이미 존재하는 아이디입니다.");
+            return;
+        }
+        newMember.setId(id);
+
+        // 닉네임
+        System.out.print("닉네임 입력: ");
+        String nickname = sc.nextLine();
+        if(repository.isNicknameExists(nickname)) {
+            System.out.println("이미 존재하는 닉네임입니다.");
+            return;
+        }
+        newMember.setNickname(nickname);
+
+        // 이메일
+        System.out.print("이메일 입력: ");
+        String email = sc.nextLine();
+        if(repository.isEmailExists(email)) {
+            System.out.println("이미 존재하는 이메일입니다.");
+            return;
+        }
+        newMember.setEmail(email);
+
+        // 전화번호
+        System.out.print("전화번호 입력: ");
+        String phone = sc.nextLine();
+        if(repository.isPhoneExists(phone)) {
+            System.out.println("이미 존재하는 전화번호입니다.");
+            return;
+        }
+        newMember.setPhone(phone);
+
+        // 회원 번호 & 상태
+        int lastNo = repository.findLastMemberNo();
+        newMember.setMemNo(lastNo + 1);
+        newMember.setAccountStatus(AccountStatus.ACTIVE);
+
+        // 저장
+        int result = repository.registMember(newMember);
+        if(result == 1) {
+            System.out.println(newMember.getId() + " 회원님 환영합니다!");
+        } else {
+            System.out.println("회원 가입 실패");
         }
     }
 }

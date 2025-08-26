@@ -4,6 +4,7 @@ import semiPljec.service.Service;
 import semiPljec.user.Member;
 import java.util.Scanner;
 
+//메뉴 보여주고 선택받는 역할(Controller)
 public class Application {
     private static final Service service = new Service();
     public static void main(String[] args) {
@@ -31,8 +32,10 @@ public class Application {
                 service.findMember(chooseId());
                 break;
             case 3: // 회원 가입
-                service.registMember(signup());
+//                service.registMember(signup());
+                service.signUp();
                 break;
+
             case 4: // 회원 정보 수정
                 Member selectMember = service.fineMemberForModify(chooseId()) ;
 
@@ -115,30 +118,33 @@ public class Application {
         return sc.nextLine();
     }
 
+    //Application은 UI만 담당, Service가 입력+중복체크+등록 로직
+
     //case 3: 회원가입
-    private static Member signup() {
-      Member member = null;
-      Scanner sc = new Scanner(System.in);
-
-      System.out.println("아이디를 입력하세요 : ");
-      String id = sc.nextLine();
-
-      System.out.println("패스워드를 입력하세요 : ");
-      String password = sc.nextLine();
-
-      System.out.println("닉네임을 입력하세요 : ");
-      String Nickname = sc.nextLine();
-
-      System.out.println("이메일을 입력하세요 : ");
-      String Email = sc.nextLine();
-
-      System.out.println("전화번호를 입력하세요 : ");
-      String Phone = sc.nextLine();
-
-
-        member = new Member(id, password, Nickname, Email, Phone);
-        return member;
-    }
+//    private static Member signup() {
+//      Member member = null;
+//      Scanner sc = new Scanner(System.in);
+//
+//
+//      System.out.println("아이디를 입력하세요 : ");
+//      String id = sc.nextLine();
+//
+//      System.out.println("패스워드를 입력하세요 : ");
+//      String password = sc.nextLine();
+//
+//      System.out.println("닉네임을 입력하세요 : ");
+//      String Nickname = sc.nextLine();
+//
+//      System.out.println("이메일을 입력하세요 : ");
+//      String Email = sc.nextLine();
+//
+//      System.out.println("전화번호를 입력하세요 : ");
+//      String Phone = sc.nextLine();
+//
+//
+//        member = new Member(id, password, Nickname, Email, Phone);
+//        return member;
+//    }
 
 }
 
