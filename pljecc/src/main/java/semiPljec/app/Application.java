@@ -1,69 +1,69 @@
 package semiPljec.app;
 
-import semiPljec.service.Service;
+import semiPljec.service.MemberService;
 import semiPljec.user.Member;
 import java.util.Scanner;
 
 //메뉴 보여주고 선택받는 역할(Controller)
 public class Application {
-    private static final Service service = new Service();
+    private static final MemberService service = new MemberService();
     public static void main(String[] args) {
 
 
-    Scanner sc = new Scanner(System.in);
-    while(true){
-        System.out.println("=======회원 관리 시스템=======");
-        System.out.println("1. 모든 회원 정보 보기");
-        System.out.println("2. 회원 찾기");
-        System.out.println("3. 회원 가입");
-        System.out.println("4. 회원 정보 수정");
-        System.out.println("5. 추천 메뉴 조회");
-        System.out.println("6. 추천 메뉴 삭제");
-        System.out.println("7. 회원 탈퇴");
-        System.out.println("9. 프로그램 종료");
-        System.out.print("메뉴를 선택해주세요 : ");
-        int input = sc.nextInt();
+        Scanner sc = new Scanner(System.in);
+        while(true){
+            System.out.println("=======회원 관리 시스템=======");
+            System.out.println("1. 모든 회원 정보 보기");
+            System.out.println("2. 회원 찾기");
+            System.out.println("3. 회원 가입");
+            System.out.println("4. 회원 정보 수정");
+            System.out.println("5. 추천 메뉴 랜덤 생성");
+            System.out.println("6. 추천 메뉴 조회");
+            System.out.println("7. 회원 탈퇴");
+            System.out.println("9. 프로그램 종료");
+            System.out.print("메뉴를 선택해주세요 : ");
+            int input = sc.nextInt();
 
-        switch(input){
-            case 1: // 모든 회원 정보 보기
-                service.fineAllMembers();
-                break;
-            case 2: // 회원 찾기
-                service.findMember(chooseId());
-                break;
-            case 3: // 회원 가입
+            switch(input){
+                case 1: // 모든 회원 정보 보기
+                    service.findAllMembers();
+                    break;
+                case 2: // 회원 찾기
+                    service.findMember(chooseId());
+                    break;
+                case 3: // 회원 가입
 //                service.registMember(signup());
-                service.signUp();
-                break;
-            case 4: // 회원 정보 수정
-                Member selectMember = service.fineMemberForModify(chooseId()) ;
+                    service.signUp();
+                    break;
+                case 4: // 회원 정보 수정
+                    Member selectMember = service.fineMemberForModify(chooseId()) ;
 
-                //회원 정보가 없을 시 작동
-                if (selectMember == null) {
-                    System.out.println("회원 정보 수정이 불가능합니다.(없는 회원입니다.)");
-                    break; // 메인 메뉴로 돌아감
-                }
-                //회원 정보가 있을 시 작동
-                service.modifyMember(modify(selectMember));
-                break;
-            case 5: // 추천 메뉴 조회
-                service.menuCategory();
-                break;
-            case 6: // 추천 메뉴 삭제
-//                service.
-                break;
-            case 7: // 회원 탈퇴
-                service.removeMember(chooseId());
-                break;
+                    //회원 정보가 없을 시 작동
+                    if (selectMember == null) {
+                        System.out.println("회원 정보 수정이 불가능합니다.(없는 회원입니다.)");
+                        break; // 메인 메뉴로 돌아감
+                    }
+                    //회원 정보가 있을 시 작동
+                    service.modifyMember(modify(selectMember));
+                    break;
+                case 5: // 추천 메뉴 랜덤 생성
+                    service.menuCategory();
+                    break;
+                case 6: // 추천 메뉴 조회
+                service.findMenu();
+                    break;
+                case 7: // 회원 탈퇴
+                    service.removeMember(chooseId());
+                    break;
                 case 9: // 프로그램 종료
                     System.out.println("프로그램을 종료하겠습니다.");
                     return;
-            default:
-                System.out.println("번호를 잘못 입력하셨습니다.");;
+                default:
+                    System.out.println("번호를 잘못 입력하셨습니다.");;
+            }
+
+
         }
-
-
-    }
 
     }
 
@@ -101,7 +101,7 @@ public class Application {
                 case 9:
                     System.out.println("메인 메뉴로 돌아갑니다.");
                     flag = false;
-                break;
+                    break;
                 default:
                     System.out.println("번호를 다시 잘 입력해 주세요.");
 
@@ -146,5 +146,3 @@ public class Application {
 //    }
 
 }
-
-
