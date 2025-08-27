@@ -1,8 +1,7 @@
 package semiPljec.service;
 
 import semiPljec.repository.Repository;
-import semiPljec.user.AccountStatus;
-import semiPljec.user.Member;
+import semiPljec.user.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -165,4 +164,58 @@ public class Service {
             System.out.println("회원 가입 실패");
         }
     }
+
+    public void menuCategory() {
+        Scanner sc = new Scanner(System.in);
+        int nationChoice;
+
+
+        do {
+            System.out.println("추천 받을 나라를 선택하세요:");
+            System.out.println("1. 한식");
+            System.out.println("2. 중식");
+            System.out.println("3. 일식");
+            System.out.println("4. 양식");
+            System.out.println("5. 동남아");
+            System.out.println("0. 종료");
+
+            nationChoice = sc.nextInt();
+
+            switch (nationChoice) {
+                case 1:
+                    System.out.println("오늘의 추천 한식: " + KoreanMenu.getRandomMenu().getKoreanName());
+                    break;
+                case 2:
+                    System.out.println("오늘의 추천 중식: " + ChineseMenu.getRandomMenu().getKoreanName());
+                    break;
+                case 3:
+                    System.out.println("오늘의 추천 일식: " + JapaneseMenu.getRandomMenu().getKoreanName());
+                    break;
+                case 4:
+                    System.out.println("오늘의 추천 양식: " + WesternMenu.getRandomMenu().getKoreanName());
+                    break;
+                case 5:
+                    System.out.println("오늘의 추천 동남아 음식: " + SoutheastAsianMenu.getRandomMenu().getKoreanName());
+                    break;
+                case 0:
+                    System.out.println("추천 메뉴 프로그램을 종료합니다.");
+                    break;
+                default:
+                    System.out.println("잘못 선택했습니다.");
+            }
+
+            if (nationChoice != 0) {
+                System.out.println("\n다시 추천을 받으시겠습니까? (계속하려면 1, 종료하려면 0)");
+                int continueChoice = sc.nextInt();
+                if (continueChoice == 0) {
+                    nationChoice = 0;
+                    System.out.println("추천 메뉴 프로그램을 종료합니다.");
+                }
+            }
+
+        } while (nationChoice != 0);
+
+        // sc.close(); // Service 클래스에서는 닫지 않는 게 안전
+    }
 }
+
