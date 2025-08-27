@@ -1,6 +1,4 @@
-package semiPljec.user;
-
-import java.util.Random;
+package semiPljec.menu;
 
 public enum KoreanMenu {
     // 국/탕/찌개

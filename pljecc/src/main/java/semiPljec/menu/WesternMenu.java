@@ -1,4 +1,4 @@
-package semiPljec.user;
+package semiPljec.menu;
 
 import java.util.Random;
 
