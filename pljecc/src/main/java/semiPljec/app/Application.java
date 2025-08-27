@@ -35,7 +35,6 @@ public class Application {
 //                service.registMember(signup());
                 service.signUp();
                 break;
-
             case 4: // 회원 정보 수정
                 Member selectMember = service.fineMemberForModify(chooseId()) ;
 
@@ -48,7 +47,7 @@ public class Application {
                 service.modifyMember(modify(selectMember));
                 break;
             case 5: // 추천 메뉴 조회
-//                service.
+                service.menuCategory();
                 break;
             case 6: // 추천 메뉴 삭제
 //                service.
