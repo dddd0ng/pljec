@@ -1,22 +1,27 @@
 package semiPljec.service;
 
-import semiPljec.repository.Repository;
+import semiPljec.menu.*;
+import semiPljec.repository.MemberRepository;
+import semiPljec.repository.MenuRepository;
 import semiPljec.user.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
 //실제 비즈니스 로직 처리 (회원가입, 로그인, 수정, 삭제 등)
-public class Service {
+public class MemberService {
 //    private final Repository repository = new Repository();
 
-    private final Repository repository;
+    private final MemberRepository repository;
+    private final MenuRepository menuRepository;
 
-    public Service() {
-        repository = new Repository();
+    public MemberService() {
+        repository = new MemberRepository();
+        menuRepository = new MenuRepository();
     }
 
-    public void fineAllMembers() {
+
+    public void findAllMembers() {
         ArrayList<Member> result = repository.findAllMembers();
         if(!result.isEmpty()){
             System.out.println("Service에서 조회 확인 : ");
@@ -124,6 +129,14 @@ public class Service {
         }
         newMember.setId(id);
 
+        System.out.print("비밀번호 입력 : ");
+        String pwd = sc.nextLine();
+        if(repository.isPwdExists(pwd)){
+            System.out.println("사용하실 비밀번호를 입력해주세요.");
+        }
+        newMember.setPwd(pwd);
+
+
         // 닉네임
         System.out.print("닉네임 입력: ");
         String nickname = sc.nextLine();
@@ -171,7 +184,7 @@ public class Service {
 
 
         do {
-            System.out.println("추천 받을 나라를 선택하세요:");
+            System.out.println("메뉴 추천 받을 나라를 선택하세요:");
             System.out.println("1. 한식");
             System.out.println("2. 중식");
             System.out.println("3. 일식");
@@ -180,28 +193,43 @@ public class Service {
             System.out.println("0. 종료");
 
             nationChoice = sc.nextInt();
+            sc.nextLine(); //버퍼 정리
+
+            String menuName = null;
 
             switch (nationChoice) {
                 case 1:
-                    System.out.println("오늘의 추천 한식: " + KoreanMenu.getRandomMenu().getKoreanName());
+                    menuName = KoreanMenu.getRandomMenu().getKoreanName();
+                    System.out.println("오늘의 추천 한식: " + menuName);
                     break;
                 case 2:
-                    System.out.println("오늘의 추천 중식: " + ChineseMenu.getRandomMenu().getKoreanName());
+                    menuName = ChineseMenu.getRandomMenu().getKoreanName();
+                    System.out.println("오늘의 추천 중식: " + menuName);
                     break;
                 case 3:
-                    System.out.println("오늘의 추천 일식: " + JapaneseMenu.getRandomMenu().getKoreanName());
+                    menuName = JapaneseMenu.getRandomMenu().getKoreanName();
+                    System.out.println("오늘의 추천 일식: " + menuName);
                     break;
                 case 4:
-                    System.out.println("오늘의 추천 양식: " + WesternMenu.getRandomMenu().getKoreanName());
+                    menuName = WesternMenu.getRandomMenu().getKoreanName();
+                    System.out.println("오늘의 추천 양식: " + menuName);
                     break;
                 case 5:
-                    System.out.println("오늘의 추천 동남아 음식: " + SoutheastAsianMenu.getRandomMenu().getKoreanName());
+                    menuName = SoutheastAsianMenu.getRandomMenu().getKoreanName();
+                    System.out.println("오늘의 추천 동남아 음식: " + menuName);
                     break;
                 case 0:
                     System.out.println("추천 메뉴 프로그램을 종료합니다.");
                     break;
                 default:
                     System.out.println("잘못 선택했습니다.");
+            }
+
+            if (menuName != null) {
+                int newNo = menuRepository.getNextNo(); // numNo 자동 증가
+                RecommendMenu recommendedMenu = new RecommendMenu(newNo, menuName);
+                menuRepository.save(recommendedMenu);
+                System.out.println("추천 메뉴가 저장되었습니다: " + recommendedMenu.getMenuName() + " (번호: " + recommendedMenu.getNumNo() + ")");
             }
 
             if (nationChoice != 0) {
@@ -216,6 +244,18 @@ public class Service {
         } while (nationChoice != 0);
 
         // sc.close(); // Service 클래스에서는 닫지 않는 게 안전
+    }
+
+    public void findMenu() {
+        ArrayList<RecommendMenu> allMenus = new ArrayList<>(menuRepository.findAll());
+        if (!allMenus.isEmpty()) {
+            System.out.println("=== 전체 추천 메뉴 목록 ===");
+            for (RecommendMenu menu : allMenus) {
+                System.out.println("번호: " + menu.getNumNo() + ", 메뉴명: " + menu.getMenuName());
+            }
+        } else {
+            System.out.println("추천 메뉴가 없습니다.");
+        }
     }
 }
 

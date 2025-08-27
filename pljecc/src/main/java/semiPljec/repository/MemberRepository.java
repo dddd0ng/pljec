@@ -5,28 +5,27 @@ import semiPljec.user.AccountStatus;
 import semiPljec.user.Member;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 // DB/파일 입출력 담당 (데이터 저장/조회(불러오기))
-public class Repository {
+public class MemberRepository {
     private final ArrayList<Member> memberList = new ArrayList<>();
-    private final File file = new File("/Users/dong/pljec/pljecc/src/main/java/semiPljec/db/mariaDB.dat");
+    private final File file = new File("src/main/java/semiPljec/db/mariaDB.dat");
 
-    public Repository() {
+    public MemberRepository() {
         if(!file.exists()){
             ArrayList<Member> defaultMemberList = new ArrayList<>();
-                try {
-                    // 파일이 위치할 디렉토리가 없으면 생성합니다.
-                    file.getParentFile().mkdirs();
-                    // 파일을 새로 생성합니다.
-                    file.createNewFile();
-                    // 생성된 파일에 초기 데이터를 저장합니다. (빈 리스트 저장)
+            try {
+                // 파일이 위치할 디렉토리가 없으면 생성
+                file.getParentFile().mkdirs();
+                // 파일 새로 생성
+                file.createNewFile();
+                // 초기 데이터를 저장 (빈 리스트)
                 saveMembers(defaultMemberList);
-                } catch (IOException e) {
-                    System.out.println("초기 데이터 파일을 생성하거나 저장하는 데 오류가 발생했습니다.");
-                    throw new RuntimeException(e);
-                }
+            } catch (IOException e) {
+                System.out.println("초기 데이터 파일을 생성하거나 저장하는 데 오류가 발생했습니다.");
+                throw new RuntimeException(e);
+            }
         }
         loadMembers();
     }
@@ -99,6 +98,12 @@ public class Repository {
             }
         }
         return false;
+    }
+
+    public boolean isPwdExists(String pwd) {
+        if (pwd == null){
+            return false;}
+       return false;
     }
 
     public boolean isNicknameExists(String nickname) {
@@ -213,6 +218,8 @@ public class Repository {
         // 마지막 회원 번호 꺼내오기
         return memberList.get(memberList.size() - 1).getMemNo();
     }
+
+
 }
 // Repository = 데이터 저장, 조회, 관리하는 역할 (데이터 영속성)
 
