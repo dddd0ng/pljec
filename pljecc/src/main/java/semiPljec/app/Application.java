@@ -19,10 +19,13 @@ public class Application {
             System.out.println("4. 회원 정보 수정");
             System.out.println("5. 추천 메뉴 랜덤 생성");
             System.out.println("6. 추천 메뉴 조회");
-            System.out.println("7. 회원 탈퇴");
-            System.out.println("9. 프로그램 종료");
+            System.out.println("7. 직접 메뉴 추천하기(로그인 한 회원만)");
+            System.out.println("8. 추천 메뉴 삭제");
+            System.out.println("9. 회원 탈퇴");
+            System.out.println("0. 프로그램 종료");
             System.out.print("메뉴를 선택해주세요 : ");
             int input = sc.nextInt();
+
 
             switch(input){
                 case 1: // 모든 회원 정보 보기
@@ -49,13 +52,29 @@ public class Application {
                 case 5: // 추천 메뉴 랜덤 생성
                     service.menuCategory();
                     break;
+
                 case 6: // 추천 메뉴 조회
                 service.findMenu();
                     break;
-                case 7: // 회원 탈퇴
+
+                case 7: //로그인 한 회원이 직접 메뉴 추천
+                    if (service.getLoginMember() == null) {
+                        System.out.println("로그인 후 이용 가능합니다.");
+                    } else {
+                        System.out.print("추천할 메뉴명을 입력하세요: ");
+                        String menuName = sc.nextLine();
+                        service.addRecommendMenu(menuName);
+                    }
+                    break;
+
+                case 8: // 추천 메뉴 삭제
+
+                    break;
+
+                case 9: // 회원 탈퇴
                     service.removeMember(chooseId());
                     break;
-                case 9: // 프로그램 종료
+                case 0: // 프로그램 종료
                     System.out.println("프로그램을 종료하겠습니다.");
                     return;
                 default:
