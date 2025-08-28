@@ -14,6 +14,8 @@ public class MemberService {
 
     private final MemberRepository repository;
     private final MenuRepository menuRepository;
+    private Member loginMember=null; // 현재 로그인 한 회원, 없으면 null
+
 
     public MemberService() {
         repository = new MemberRepository();
@@ -190,12 +192,14 @@ public class MemberService {
             System.out.println("3. 일식");
             System.out.println("4. 양식");
             System.out.println("5. 동남아");
+            System.out.println("9. 추천 받은 메뉴 조회");
             System.out.println("0. 종료");
 
             nationChoice = sc.nextInt();
             sc.nextLine(); //버퍼 정리
 
             String menuName = null;
+            String memberId = null;
 
             switch (nationChoice) {
                 case 1:
@@ -218,6 +222,10 @@ public class MemberService {
                     menuName = SoutheastAsianMenu.getRandomMenu().getKoreanName();
                     System.out.println("오늘의 추천 동남아 음식: " + menuName);
                     break;
+                case 9:
+                    System.out.println("추천 받은 메뉴를 조회합니다.");
+                    findMenu();
+                    break;
                 case 0:
                     System.out.println("추천 메뉴 프로그램을 종료합니다.");
                     break;
@@ -227,9 +235,17 @@ public class MemberService {
 
             if (menuName != null) {
                 int newNo = menuRepository.getNextNo(); // numNo 자동 증가
-                RecommendMenu recommendedMenu = new RecommendMenu(newNo, menuName);
+                RecommendMenu recommendedMenu = new RecommendMenu(newNo, menuName, memberId);
                 menuRepository.save(recommendedMenu);
                 System.out.println("추천 메뉴가 저장되었습니다: " + recommendedMenu.getMenuName() + " (번호: " + recommendedMenu.getNumNo() + ")");
+            }
+
+            if (memberId != null) {
+                int newNo = menuRepository.getNextNo(); // numNo 자동 증가
+                RecommendMenu recommendedMenu = new RecommendMenu(newNo, menuName, memberId);
+                menuRepository.save(recommendedMenu);
+                System.out.println("추천 메뉴가 저장되었습니다: " + recommendedMenu.getMenuName() + " (번호: " + recommendedMenu.getNumNo() + ")" + "" +
+                                            "추천한 회원 : " + recommendedMenu.getMemberId());
             }
 
             if (nationChoice != 0) {
@@ -251,11 +267,47 @@ public class MemberService {
         if (!allMenus.isEmpty()) {
             System.out.println("=== 전체 추천 메뉴 목록 ===");
             for (RecommendMenu menu : allMenus) {
-                System.out.println("번호: " + menu.getNumNo() + ", 메뉴명: " + menu.getMenuName());
+                System.out.println("번호: " + menu.getNumNo() + ", 메뉴명: " + menu.getMenuName()+", 추천자: " + menu.getMemberId());
             }
         } else {
             System.out.println("추천 메뉴가 없습니다.");
         }
     }
+
+    public Member getLoginMember() {
+        return loginMember;
+    }
+
+    // 로그인 메서드
+    public void login(String id, String password) {
+        Member member = repository.findMember(id);
+        if (member != null && member.getPwd().equals(password)) {
+            loginMember = member;
+            System.out.println(member.getId() + "님, 로그인 성공!");
+        } else {
+            System.out.println("아이디 또는 비밀번호가 잘못되었습니다.");
+        }
+    }
+
+    // 로그아웃
+    public void logout() {
+        loginMember = null;
+        System.out.println("로그아웃 되었습니다.");
+    }
+
+    public void addRecommendMenu(String menuName) {
+        int newNo = menuRepository.getNextNo();
+        RecommendMenu recommendMenu = new RecommendMenu(newNo, menuName, loginMember.getId());
+        menuRepository.save(recommendMenu);
+
+        if (loginMember == null) {
+            System.out.println("로그인이 필요합니다.");
+            return;
+        }
+        menuRepository.save(recommendMenu);
+        System.out.println(loginMember.getId() + "님이 '" + menuName + "' 메뉴를 추천했습니다!");
+    }
+
+
 }
 
