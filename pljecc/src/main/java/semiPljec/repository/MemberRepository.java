@@ -10,7 +10,7 @@ import java.util.ArrayList;
 // DB/파일 입출력 담당 (데이터 저장/조회(불러오기))
 public class MemberRepository {
     private final ArrayList<Member> memberList = new ArrayList<>();
-    private final File file = new File("src/main/java/semiPljec/db/mariaDB.dat");
+    private final File file = new File("db/mariaDB.dat");
 
     public MemberRepository() {
         if(!file.exists()){
