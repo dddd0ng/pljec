@@ -10,24 +10,32 @@ public class MenuRepository {
     private List<RecommendMenu> menuList = new ArrayList<>();
     private int lastNo = 0; // 자동 증가 번호
 
+    //프로그램 시작 시 recommendedMenu.dat파일 읽어와 menuList초기화
+    //마지막 번호 lastNo도 불러옴
     public MenuRepository() {
         load(); // 시작할 때 파일 불러오기
     }
 
+    //추천메뉴를 menuList에 추가
+    //saveToFile()호출 -> 파일에 직렬화 저장
     public void save(RecommendMenu menu) {
         menuList.add(menu);
         saveToFile();
     }
 
+    //지금까지 저장된 모든 추천 메뉴 반환(조회기능)
     public List<RecommendMenu> findAll() {
         return menuList;
     }
 
+    //자동 증가 번호 관리 LastNo 증가시키고 반환
+    //메뉴 고유 번호numNo 생성용
     public int getNextNo() {
         return ++lastNo;
     }
 
     // 파일 저장
+    //ObjectOutputStream으로 menuList전체 직렬화->recommendMenu.dat
     private void saveToFile() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_NAME))) {
             oos.writeObject(menuList);
@@ -37,6 +45,7 @@ public class MenuRepository {
     }
 
     // 파일 불러오기
+    // 파일이 존재하면 menuList불러오기, 마지막 메뉴번호 lastNo갱신
     private void load() {
         File file = new File(FILE_NAME);
         if (!file.exists()) return;
