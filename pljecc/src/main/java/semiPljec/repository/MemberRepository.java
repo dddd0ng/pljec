@@ -10,7 +10,7 @@ import java.util.ArrayList;
 // DB/파일 입출력 담당 (데이터 저장/조회(불러오기))
 public class MemberRepository {
     private final ArrayList<Member> memberList = new ArrayList<>();
-    private final File file = new File("db/mariaDB.dat");
+    private final File file = new File("db/member.dat");
 
     public MemberRepository() {
         if(!file.exists()){
@@ -30,7 +30,9 @@ public class MemberRepository {
         loadMembers();
     }
 
-
+//Output스트림으로 .dat파일에 객체 직렬화 후 저장
+    //meberList에 추가 후, saveMembers(memberList)호출
+    //반환값:1 -> 성공, 반환값:0 ->실패
     public int registMember(Member newMember) {
         Output moo = null;
         int result = 0;
@@ -103,7 +105,7 @@ public class MemberRepository {
     public boolean isPwdExists(String pwd) {
         if (pwd == null){
             return false;}
-       return false;
+        return false;
     }
 
     public boolean isNicknameExists(String nickname) {
@@ -156,6 +158,7 @@ public class MemberRepository {
         }
     }
 
+    //특정 ID회원 조회 + ACTIVE상태 확인
     public Member findMember(String id) {
         for (Member member : memberList) {
             if (id != null && id.equals(member.getId()) && member.getAccountStatus() == AccountStatus.ACTIVE) {
@@ -222,4 +225,3 @@ public class MemberRepository {
 
 }
 // Repository = 데이터 저장, 조회, 관리하는 역할 (데이터 영속성)
-
