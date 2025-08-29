@@ -19,62 +19,50 @@ public class Application {
             System.out.println("4. 회원 정보 수정");
             System.out.println("5. 추천 메뉴 랜덤 생성");
             System.out.println("6. 추천 메뉴 조회");
-            System.out.println("7. 직접 메뉴 추천하기(로그인 한 회원만)");
-            System.out.println("8. 추천 메뉴 삭제");
-            System.out.println("9. 회원 탈퇴");
-            System.out.println("0. 프로그램 종료");
+            System.out.println("7. 회원 탈퇴");
+            System.out.println("9. 프로그램 종료");
             System.out.print("메뉴를 선택해주세요 : ");
             int input = sc.nextInt();
 
-
             switch(input){
                 case 1: // 모든 회원 정보 보기
-                    service.findAllMembers();
+                    service.findAllMembers();  //모든 회원 출력
                     break;
                 case 2: // 회원 찾기
                     service.findMember(chooseId());
+                    // chooseId()로 사용자한테 id입력받고 MemberService.findMember()호출
                     break;
                 case 3: // 회원 가입
 //                service.registMember(signup());
                     service.signUp();
+                    //회원 정보를 입력받아 등록 -> UI는 입력, Service가 유효성/중복 체크 + 등록
                     break;
                 case 4: // 회원 정보 수정
                     Member selectMember = service.fineMemberForModify(chooseId()) ;
-
+                    //chooseId()로 id입력 후, fineMemberForModify() 호출 ->수정할 회원 조회
                     //회원 정보가 없을 시 작동
                     if (selectMember == null) {
                         System.out.println("회원 정보 수정이 불가능합니다.(없는 회원입니다.)");
                         break; // 메인 메뉴로 돌아감
                     }
+
+                    //회원이 존재하면 modify() 호출 -> 패스워드,닉네임,이메일,전화번호 수정
+                    //service의 modifyMember() 변경 반영
                     //회원 정보가 있을 시 작동
                     service.modifyMember(modify(selectMember));
                     break;
+
+
                 case 5: // 추천 메뉴 랜덤 생성
                     service.menuCategory();
                     break;
-
                 case 6: // 추천 메뉴 조회
-                service.findMenu();
+                    service.findMenu();
                     break;
-
-                case 7: //로그인 한 회원이 직접 메뉴 추천
-                    if (service.getLoginMember() == null) {
-                        System.out.println("로그인 후 이용 가능합니다.");
-                    } else {
-                        System.out.print("추천할 메뉴명을 입력하세요: ");
-                        String menuName = sc.nextLine();
-                        service.addRecommendMenu(menuName);
-                    }
-                    break;
-
-                case 8: // 추천 메뉴 삭제
-
-                    break;
-
-                case 9: // 회원 탈퇴
+                case 7: // 회원 탈퇴
                     service.removeMember(chooseId());
                     break;
-                case 0: // 프로그램 종료
+                case 9: // 프로그램 종료
                     System.out.println("프로그램을 종료하겠습니다.");
                     return;
                 default:
