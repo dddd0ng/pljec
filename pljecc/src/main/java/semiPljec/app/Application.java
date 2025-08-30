@@ -59,10 +59,13 @@ public class Application {
                 case 6: // 추천 메뉴 조회
                     service.findMenu();
                     break;
-                case 7: // 회원 탈퇴
+
+                case 7: // 추천 메뉴 직접 생성(로그인 한 유저만)
+
+                case 9: // 회원 탈퇴
                     service.removeMember(chooseId());
                     break;
-                case 9: // 프로그램 종료
+                case 0: // 프로그램 종료
                     System.out.println("프로그램을 종료하겠습니다.");
                     return;
                 default:
