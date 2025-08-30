@@ -62,6 +62,8 @@ public class Application {
 
                 case 7: // 추천 메뉴 직접 생성(로그인 한 유저만)
 
+                case 8: // 추천 메뉴 삭제
+
                 case 9: // 회원 탈퇴
                     service.removeMember(chooseId());
                     break;
