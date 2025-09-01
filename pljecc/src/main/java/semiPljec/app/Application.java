@@ -19,8 +19,10 @@ public class Application {
             System.out.println("4. 회원 정보 수정");
             System.out.println("5. 추천 메뉴 랜덤 생성");
             System.out.println("6. 추천 메뉴 조회");
-            System.out.println("7. 회원 탈퇴");
-            System.out.println("9. 프로그램 종료");
+            System.out.println("7. 추천 메뉴 직접 생성(구현중)");  // 추천 메뉴 직접 생성(로그인 한 유저만)
+            System.out.println("8. 추천 메뉴 삭제(구현중)");            // 추천 메뉴 삭제
+            System.out.println("9. 회원 탈퇴");
+            System.out.println("0. 프로그램 종료");
             System.out.print("메뉴를 선택해주세요 : ");
             int input = sc.nextInt();
 
@@ -61,6 +63,8 @@ public class Application {
                     break;
 
                 case 7: // 추천 메뉴 직접 생성(로그인 한 유저만)
+
+                case 8: // 추천 메뉴 삭제
 
                 case 9: // 회원 탈퇴
                     service.removeMember(chooseId());
