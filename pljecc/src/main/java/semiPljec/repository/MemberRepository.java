@@ -95,7 +95,8 @@ public class MemberRepository {
             return false;
         }
         for (Member member : memberList) {
-            if (member.getId().equals(id)) {
+            //member.getAccountStatus()==AccountStatus.ACTIVE &&
+            if (member.getAccountStatus()==AccountStatus.ACTIVE && member.getId().equals(id)) {
                 return true;
             }
         }
@@ -114,7 +115,7 @@ public class MemberRepository {
             return false;
         }
         for (Member member : memberList) {
-            if (member.getNickname().equals(nickname)) {
+            if (member.getAccountStatus()==AccountStatus.ACTIVE &&member.getNickname().equals(nickname)) {
                 return true;
             }
         }
@@ -129,7 +130,7 @@ public class MemberRepository {
         for (Member member : memberList) { // 모든 Member 객체 순회
             //member.getEmail()이 null이 아니고 입력된 이메일과 동일한 경우 중복으로 판단함
             //문자열 비교는 ==이 아니라 .equals() 사용해야함
-            if (email.equals(member.getEmail())) {
+            if (member.getAccountStatus()==AccountStatus.ACTIVE && email.equals(member.getEmail())) {
                 return true;
             }
         }
@@ -144,7 +145,7 @@ public class MemberRepository {
         for (Member member : memberList) {
             //member.getPhone()이 null이 아니고 입력된 이메일과 동일한 경우 중복으로 판단함
             //문자열 비교는 ==이 아니라 .equals() 사용해야함
-            if (phone.equals(member.getPhone())) {
+            if (member.getAccountStatus()==AccountStatus.ACTIVE &&phone.equals(member.getPhone())) {
                 return true;
             }
         }
@@ -160,7 +161,7 @@ public class MemberRepository {
 
     //특정 ID회원 조회 + ACTIVE상태 확인
     public Member findMember(String id) {
-        for (Member member : memberList) {
+        for (Member member : memberList) {         //ACTIVE만 조회
             if (id != null && id.equals(member.getId()) && member.getAccountStatus() == AccountStatus.ACTIVE) {
                 return member;
             }
