@@ -37,7 +37,9 @@ public class MemberRepository {
         Output moo = null;
         int result = 0;
         try{
-            moo=new Output(new BufferedOutputStream(new FileOutputStream(file, true)));
+            //지금 코드는 memberList를 항상 전체 저장하는 구조라서(saveMembers(memberList))
+            //append를 쓰면 파일에 이전 객체가 남아서 중복이 생김
+            moo=new Output(new BufferedOutputStream(new FileOutputStream(file)));
             moo.writeObject(newMember);
             moo.flush();
             //buffered때매 출력할 때 flush() 필요함, 없으면 값 안나옴
@@ -45,7 +47,9 @@ public class MemberRepository {
             //컬렉션이 회원으로 채워지도록 작성
 //            memberList.clear();
 //            loadMembers();
+            //회원 리스트에 추가
             memberList.add(newMember);
+            //전체 리스트를 파일에 저장
             saveMembers(memberList);
 
             result=1;
@@ -62,6 +66,7 @@ public class MemberRepository {
     }
 
     private void loadMembers() {
+        memberList.clear(); // 기존 리스트 초기화
         if(file.length() == 0) return; // 파일 비어있으면 그냥 종료
 
         try (ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
@@ -201,19 +206,20 @@ public class MemberRepository {
         }
     }
 
-    public int removeMember(String memId) {
-        int result = 0;
-        for (Member member : memberList) {
-            if (member.getId().equals(memId)) {
-                member.setAccountStatus(AccountStatus.DEACTIVE);
+        public int removeMember(String memId) {
+            int result = 0;
+            for (Member member : memberList) {
+                if (member.getId().equals(memId) &&  member.getAccountStatus() == AccountStatus.ACTIVE) {
+                    member.setAccountStatus(AccountStatus.DEACTIVE);
 
-                saveMembers(memberList);
+                    saveMembers(memberList); // 상태 저장
 
-                result = 1;
-                break;
-            }
-        }return result;
-    }
+                    result = 1;
+                    break;
+                }
+//                saveMembers(memberList); // 탈퇴 처리 후 리스트 상태 저장
+            }return result;
+        }
 
     public int findLastMemberNo() {
         if (memberList.isEmpty()) {
