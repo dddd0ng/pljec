@@ -59,4 +59,9 @@ public class MenuRepository {
             e.printStackTrace();
         }
     }
+
+    public void saveAll(List<RecommendMenu> menus) {
+        this.menuList = menus;
+        saveToFile(); // 기존 saveToFile() 사용
+    }
 }

@@ -230,5 +230,6 @@ public class MemberRepository {
     }
 
 
+
 }
 // Repository = 데이터 저장, 조회, 관리하는 역할 (데이터 영속성)
