@@ -293,4 +293,14 @@ public class MemberService {
             System.out.println("추천 메뉴가 없습니다.");
         }
     }
+
+    //메뉴 삭제 => 메뉴 이름 기준으로
+    public boolean removeMenu(String menuName){
+        List<RecommendMenu> menus = menuRepository.findAll();
+        boolean removed = menus.removeIf(menu ->menu.getMenuName().equals(menuName));
+        if(removed){
+            menuRepository.saveAll(menus); // 전체 리스트 다시 저장함
+        }
+        return removed;
+    }
 }
