@@ -11,6 +11,7 @@ public class Application {
 
 
         Scanner sc = new Scanner(System.in);
+
         while(true){
             System.out.println("=======회원 관리 시스템=======");
             System.out.println("1. 모든 회원 정보 보기");
@@ -24,7 +25,10 @@ public class Application {
             System.out.println("9. 회원 탈퇴");
             System.out.println("0. 프로그램 종료");
             System.out.print("메뉴를 선택해주세요 : ");
+
             int input = sc.nextInt();
+            sc.nextLine();
+            /* case : 8 메뉴번호 받고 ,엔터\n남음 때문에 nextLine()이 바로 빈 문자열을 읽어버림*/
 
             switch(input){
                 case 1: // 모든 회원 정보 보기
@@ -61,11 +65,20 @@ public class Application {
                 case 6: // 추천 메뉴 조회
                     service.findMenu();
                     break;
-
                 case 7: // 추천 메뉴 직접 생성(로그인 한 유저만)
+                    break;
+                case 8: 
+                    System.out.println("삭제할 추천 메뉴 이름을 입력하세요 : ");
+                    String menuNameToDelete = sc.nextLine();
 
-                case 8: // 추천 메뉴 삭제
+                    boolean deleted = service.removeMenu(menuNameToDelete);  // 추천 메뉴 삭제
 
+                    if(deleted){
+                        System.out.println("'"+menuNameToDelete+"'메뉴가 성공적으로 삭제되었습니다.");
+                    }else {
+                        System.out.println("'"+menuNameToDelete+"'메뉴를 찾을 수 없습니다.");
+                }
+                    break;
                 case 9: // 회원 탈퇴
                     service.removeMember(chooseId());
                     break;
