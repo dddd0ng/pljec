@@ -77,7 +77,7 @@ public class MemberService {
             System.out.println("회원 정보 수정이 실패하였습니다.");
         }
     }
-    //Repository에서 회원 삭제
+    //Repository에서 회원 삭제 //pwd검증해야
     public void removeMember(String memId) {
         int result = repository.removeMember(memId);
 
