@@ -34,42 +34,6 @@ public class MemberService {
             System.out.println("해당 사이트에 회원 없음");
         }
     }
-    //회원가입 중복검사 (닉네임, 이메일, 전화번호)
-    //기존 회원 가입용 메서드, 중복 체크 + 상태 설정 후 저장
-    public void registMember(Member newMember) {
-
-        //회원 활성화 상태 추가
-        newMember.setAccountStatus((AccountStatus.ACTIVE));
-
-        //중복체크
-        if(repository.isIdExists(newMember.getId())){
-            System.out.println("이미 존재하는 아이디입니다.");
-            return;
-        }
-
-        if(repository.isNicknameExists(newMember.getNickname())){
-            System.out.println("이미 존재하는 닉네임입니다.");
-            return;
-        }
-
-        if(repository.isEmailExists(newMember.getEmail())){
-            System.out.println("이미 존재하는 이메일입니다.");
-            return;
-        }
-        if(repository.isPhoneExists(newMember.getPhone())){
-            System.out.println("이미 존재하는 전화번호입니다.");
-            return;
-        }
-        // 중복 없을때만 저장 진행, 순서 중요함, 위에 해당 코드 썼었으면 저장한 상태에서 검사->항상 이미 존재하는 아이디라 뜸
-        int result = repository.registMember(newMember); // 회원가입
-
-        if(result == 1){
-            System.out.println("회원가입 성공!");
-            System.out.println(newMember.getId()+"회원님 환영합니다!");
-        }else{
-            System.out.println("회원 가입 실패");
-        }
-    }
 
     //특정 ID 회원 조회 -> 출력
     public void findMember(String id) {
@@ -120,7 +84,7 @@ public class MemberService {
         if (result > 0) {
             System.out.println("회원님 그동안 감사했습니다.");
         }else{
-            System.out.println("회원탈퇴 실패");
+            System.out.println("해당 회원이 없어서 회원탈퇴에 실패하였습니다.");
         }
     }
 
