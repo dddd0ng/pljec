@@ -21,7 +21,7 @@ public class Application {
             System.out.println("5. 추천 메뉴 랜덤 생성");
             System.out.println("6. 추천 메뉴 조회");
             System.out.println("7. 추천 메뉴 직접 생성(구현중)");  // 추천 메뉴 직접 생성(로그인 한 유저만)
-            System.out.println("8. 추천 메뉴 삭제(구현중)");            // 추천 메뉴 삭제
+            System.out.println("8. 추천 메뉴 삭제");
             System.out.println("9. 회원 탈퇴");
             System.out.println("0. 프로그램 종료");
             System.out.print("메뉴를 선택해주세요 : ");
@@ -39,7 +39,6 @@ public class Application {
                     // chooseId()로 사용자한테 id입력받고 MemberService.findMember()호출
                     break;
                 case 3: // 회원 가입
-//                service.registMember(signup());
                     service.signUp();
                     //회원 정보를 입력받아 등록 -> UI는 입력, Service가 유효성/중복 체크 + 등록
                     break;
@@ -67,7 +66,7 @@ public class Application {
                     break;
                 case 7: // 추천 메뉴 직접 생성(로그인 한 유저만)
                     break;
-                case 8: 
+                case 8:
                     System.out.println("삭제할 추천 메뉴 이름을 입력하세요 : ");
                     String menuNameToDelete = sc.nextLine();
 
